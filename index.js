@@ -39,8 +39,17 @@ app.post('/user', async (req, res) => {
     }
 })
 
+app.get('/task', async (req, res) => {
+    const tasks = await Task.find()
+    return res.json({ success: true, tasks })
+});
 
-const host = '127.0.0.1'
+app.get('/user', async (req, res) => {
+    const users = await User.find()
+    return res.json({ success: true, users })
+});
+
+const host = '127.0.0.1';
 const port = process.env.PORT || 4040;
 
 app.listen(port, () => console.log(`Server is runing at http://${host}:${port}`));
