@@ -1,5 +1,8 @@
+const express = require('express');
 const mongoose = require('mongoose');
-const colors = require('colors')
+const colors = require('colors');
+
+const app = express();
 
 mongoose.connect('mongodb://localhost:27017/task')
     .then(() => console.log('Database is connected'))
@@ -7,31 +10,10 @@ mongoose.connect('mongodb://localhost:27017/task')
 
 const User = require('./model/User');
 const Task = require('./model/Task');
+const req = require('express/lib/request');
 
-async function db() {
 
-    try {
-        // const user = new User({
-        //     name: 'Dorian',
-        //     age: 31,
-        //     email: 'dgray@gmail.com',
-        //     password: '12345'
-        // })
-        // await user.save();
-        // console.log(user)
+const host = '127.0.0.1'
+const port = process.env.PORT || 4040;
 
-        const task = new Task({
-            description: 'task 1',
-            isCompleted: true,
-        })
-
-        await task.save()
-        console.log(task)
-    }
-
-    catch (e) {
-        console.log(colors.red.underline.bold(e.message))
-    }
-}
-
-db()
+app.listen(port, () => console.log(`Server is runing at http://${host}:${port}`));
