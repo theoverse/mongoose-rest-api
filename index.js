@@ -45,8 +45,16 @@ app.get('/task', async (req, res) => {
 });
 
 app.get('/task/:id', async (req, res) => {
-    const tasks = await Task.findById(req.params.id)
-    return res.json({ success: true, tasks })
+    const task = await Task.findById(req.params.id)
+
+    if (!task) {
+        return res.status(404).json({
+            success: false,
+            message: 'Task not found'
+        });
+    }
+
+    return res.json({ success: true, task })
 });
 
 app.get('/user', async (req, res) => {
@@ -55,9 +63,43 @@ app.get('/user', async (req, res) => {
 });
 
 app.get('/user/:id', async (req, res) => {
-    const users = await User.findById(req.params.id)
-    return res.json({ success: true, users })
+    const user = await User.findById(req.params.id)
+
+    if (!user) {
+        return res.status(404).json({
+            success: false,
+            message: 'User not found'
+        });
+    }
+
+    return res.json({ success: true, user })
 });
+
+app.patch('/user/:id', async (req, res) => {
+
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        return res.json({ success: true, user })
+    }
+
+    catch (e) {
+        return res.status(400).json({
+            success: false,
+            message: e.message,
+        })
+    }
+})
 
 
 const host = '127.0.0.1';
