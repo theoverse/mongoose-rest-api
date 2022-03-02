@@ -4,13 +4,29 @@ const colors = require('colors');
 
 const app = express();
 
+app.use(express.json());
+
 mongoose.connect('mongodb://localhost:27017/task')
     .then(() => console.log('Database is connected'))
     .catch((err) => console.log(err));
 
 const User = require('./model/User');
 const Task = require('./model/Task');
-const req = require('express/lib/request');
+
+app.post('/task', async (req, res) => {
+
+    try {
+        // console.log(req.body)
+        const task = new Task(req.body)
+        // console.log(task)
+        await task.save()
+
+        return res.status(201).json({ success: true, task })
+    }
+    catch (e) {
+        return res.status(400).json({ success: false, message: e.message })
+    }
+})
 
 
 const host = '127.0.0.1'
