@@ -16,12 +16,23 @@ const Task = require('./model/Task');
 app.post('/task', async (req, res) => {
 
     try {
-        // console.log(req.body)
         const task = new Task(req.body)
-        // console.log(task)
         await task.save()
 
         return res.status(201).json({ success: true, task })
+    }
+    catch (e) {
+        return res.status(400).json({ success: false, message: e.message })
+    }
+})
+
+app.post('/user', async (req, res) => {
+
+    try {
+        const user = new User(req.body)
+        await user.save()
+
+        return res.status(201).json({ success: true, user })
     }
     catch (e) {
         return res.status(400).json({ success: false, message: e.message })
