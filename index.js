@@ -44,10 +44,21 @@ app.get('/task', async (req, res) => {
     return res.json({ success: true, tasks })
 });
 
+app.get('/task/:id', async (req, res) => {
+    const tasks = await Task.findById(req.params.id)
+    return res.json({ success: true, tasks })
+});
+
 app.get('/user', async (req, res) => {
     const users = await User.find()
     return res.json({ success: true, users })
 });
+
+app.get('/user/:id', async (req, res) => {
+    const users = await User.findById(req.params.id)
+    return res.json({ success: true, users })
+});
+
 
 const host = '127.0.0.1';
 const port = process.env.PORT || 4040;
