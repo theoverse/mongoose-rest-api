@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         minlength: 3,
         maxlength: 20,
-        require: true
+        required: true,
+        trim: true,
     },
     age: {
         type: Number,
@@ -20,6 +21,10 @@ const userSchema = new mongoose.Schema({
     },
     email: {
         type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        trim: true,
         validate(value) {
             if (!validator.isEmail(value)) {
                 throw new Error('Email is not valid')
