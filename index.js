@@ -1,6 +1,5 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const colors = require('colors');
 
 const app = express();
 
