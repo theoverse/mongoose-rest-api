@@ -57,6 +57,32 @@ app.get('/task/:id', async (req, res) => {
     return res.json({ success: true, task })
 });
 
+app.patch('/task/:id', async (req, res) => {
+
+    try {
+        const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+            runValidators: true,
+        });
+
+        if (!task) {
+            return res.status(404).json({
+                success: false,
+                message: 'Task not found'
+            });
+        }
+
+        return res.json({ success: true, task })
+    }
+
+    catch (e) {
+        return res.status(400).json({
+            success: false,
+            message: e.message,
+        })
+    }
+})
+
 app.get('/user', async (req, res) => {
     const users = await User.find()
     return res.json({ success: true, users })
