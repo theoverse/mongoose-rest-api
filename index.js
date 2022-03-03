@@ -127,6 +127,51 @@ app.patch('/user/:id', async (req, res) => {
     }
 })
 
+app.delete('/user/:id', async (req, res) => {
+
+    try {
+        const user = await User.findByIdAndDelete(req.params.id)
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: 'User not found'
+            });
+        }
+
+        return res.json({ success: true, user })
+    }
+
+    catch (e) {
+        return res.status(404).json({
+            success: false,
+            message: e.message,
+        })
+    }
+})
+
+app.delete('/task/:id', async (req, res) => {
+
+    try {
+        const task = await Task.findByIdAndDelete(req.params.id)
+
+        if (!task) {
+            return res.status(404).json({
+                success: false,
+                message: 'Task not found'
+            });
+        }
+
+        return res.json({ success: true, task })
+    }
+
+    catch (e) {
+        return res.status(404).json({
+            success: false,
+            message: e.message,
+        })
+    }
+})
 
 const host = '127.0.0.1';
 const port = process.env.PORT || 4040;
