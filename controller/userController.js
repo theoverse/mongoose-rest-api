@@ -34,10 +34,13 @@ exports.getSingleUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
 
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-            new: true,
-            runValidators: true,
-        });
+        const user = await User.findById(req.params.id);
+        const keys = Object.keys(req.body);
+
+        for (let key of keys) {
+            user[key] = req.body[key]
+        }
+        await user.save();
 
         if (!user) {
             return res.status(404).json({
