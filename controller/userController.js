@@ -1,3 +1,4 @@
+const bcrypt = require('bcryptjs');
 const User = require('../model/User');
 
 exports.createUser = async (req, res) => {
@@ -81,4 +82,30 @@ exports.deleteUser = async (req, res) => {
             message: e.message,
         })
     }
+}
+
+exports.login = async (req, res) => {
+
+    const { email, password } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid Email'
+        });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return res.status(401).json({
+            success: false,
+            message: 'Invalid Password'
+        });
+    }
+
+    return res.status(200).json({
+        success: true,
+        user,
+    });
 }
